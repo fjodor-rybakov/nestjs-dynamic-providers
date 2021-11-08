@@ -1,7 +1,7 @@
 {
-  "name": "nestjs-dynamic-provider",
+  "name": "nestjs-dynamic-providers",
   "version": "0.0.1",
-  "description": "Inject dynamic provider",
+  "description": "Inject dynamic providers",
   "author": "fjodor-rybakov",
   "license": "MIT",
   "main": "dist/index.js",
@@ -17,6 +17,18 @@
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "nestjs",
+    "decorator",
+    "nest",
+    "typescript",
+    "glob",
+    "glob pattern",
+    "dynamic providers",
+    "providers",
+    "inject",
+    "module"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

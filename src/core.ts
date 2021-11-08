@@ -37,11 +37,11 @@ export interface DynamicProviderOptions {
 /**
  * Add providers into module by glob pattern.
  */
-export function InjectDynamicProvider(
+export function InjectDynamicProviders(
   ...options: DynamicProviderOptions[]
 ): ClassDecorator;
-export function InjectDynamicProvider(...patterns: Pattern[]): ClassDecorator;
-export function InjectDynamicProvider(...options: any[]): ClassDecorator {
+export function InjectDynamicProviders(...patterns: Pattern[]): ClassDecorator;
+export function InjectDynamicProviders(...options: any[]): ClassDecorator {
   return <TFunction extends Function>(target: TFunction): TFunction => {
     if (isDynamicProviderOptions(options)) store.push({ target, options });
     if (isPattern(options))
