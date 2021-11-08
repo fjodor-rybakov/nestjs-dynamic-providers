@@ -60,7 +60,7 @@ export async function resolveDynamicProviders(): Promise<void> {
       const resolvedProviders = await resolveByGlobPattern(options);
 
       resolvedProviders.forEach(({ types, exportProviders }) => {
-        this.mergeProviders(target, types);
+        mergeProviders(target, types);
         if (exportProviders) {
           mergeExportedProviders(target, types);
         }
