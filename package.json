@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fjodor-rybakov/discord-nestjs"
+    "url": "https://github.com/fjodor-rybakov/nestjs-dynamic-providers"
   },
   "publishConfig": {
     "access": "public"
@@ -23,8 +23,8 @@
     "nest",
     "typescript",
     "glob",
-    "glob pattern",
-    "dynamic providers",
+    "pattern",
+    "dynamic",
     "providers",
     "inject",
     "module"
