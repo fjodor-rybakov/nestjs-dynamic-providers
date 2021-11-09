@@ -1,5 +1,6 @@
 import { Type } from '@nestjs/common';
 import { glob } from 'glob';
+import { SCOPE_OPTIONS_METADATA } from '@nestjs/common/constants';
 
 interface StoreValue {
   target: Function;
@@ -107,7 +108,12 @@ async function resolveByGlobPattern(
 
             const types = await getClasses(pathToFiles);
 
-            return resolve({ types, exportProviders });
+            return resolve({
+              types: types.filter((type) =>
+                Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type),
+              ),
+              exportProviders,
+            });
           }),
         ),
     ),
