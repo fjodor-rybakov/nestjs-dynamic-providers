@@ -55,7 +55,7 @@ all classes that it finds in files that end in `.animal.js`
 
 - `@InjectDynamicProviders` decorator takes list of glob patterns or list of options as parameters.
 
-> ⚠️**Important! Files are searched from the startup root, so the extension must be `js`.**
+> ⚠️**Important! Files are searched from the startup root.**
 
 ```typescript
 /* animal.module.ts */
@@ -66,7 +66,7 @@ import { AnyOtherProvider } from './any-other-provider';
 
 @InjectDynamicProviders('dist/**/*.animal.js')
 @Module({
-  providers: [AnyOtherProvider], // Will [AnyOtherProvider, Hippo, Lion]
+  providers: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
 })
 export class AnimalModule {}
 ```
@@ -99,8 +99,8 @@ import { AnyOtherProvider } from './any-other-provider';
 
 @InjectDynamicProviders({ pattern: 'dist/**/*.animal.js', exportProviders: true })
 @Module({
-  providers: [AnyOtherProvider], // Will [AnyOtherProvider, Hippo, Lion]
-  exports: [AnyOtherProvider], // Will [AnyOtherProvider, Hippo, Lion]
+  providers: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
+  exports: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
 })
 export class AnimalModule {}
 ```
