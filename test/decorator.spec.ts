@@ -2,7 +2,7 @@ import { InjectDynamicProviders, resolveDynamicProviders } from '../src';
 import { Module, ModuleMetadata } from '@nestjs/common';
 import { Veterinarian, Hippo, Lion, Cat, Dog } from './__fixture__';
 
-describe('Dynamic module', () => {
+describe('Dynamic decorator', () => {
   it('should set only injectable providers into module', async () => {
     @InjectDynamicProviders('test/__fixture__/**/*.wild.ts')
     @Module({})

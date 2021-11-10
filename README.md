@@ -32,6 +32,83 @@ $ yarn add nestjs-dynamic-providers
 
 ## ▶️ Usage <a name="Usage"></a>
 
+You can add providers dynamically in two ways: Using a decorator or importing an external module.
+
+> You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are
+> compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
+
+> ⚠️**Important! Files are searched from the startup root.**
+
+<details>
+  <summary>Using external module import (Click to expand)</summary>
+
+```typescript
+/* animal.module.ts */
+
+import { Module } from '@nestjs/common';
+import { InjectDynamicProviderModule } from 'nestjs-dynamic-providers';
+import { AnyOtherProvider } from './any-other-provider';
+
+@Module({
+  import: [InjectDynamicProviderModule.forFeature('dist/**/*.animal.js')],
+  providers: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
+})
+export class AnimalModule {}
+```
+
+
+```typescript
+/* hippo.animal.ts */
+
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class Hippo {}
+```
+
+```typescript
+/* lion.animal.ts */
+
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class Lion {}
+```
+
+```typescript
+/* app.module.ts */
+
+import { Module } from '@nestjs/common';
+import { AnimalModule } from './animal.module';
+
+@Module({
+  imports: [AnimalModule],
+})
+export class AppModule {}
+```
+
+In this approach, all providers are created inside an external module. For export, you must specify the `exportProviders` flag.
+
+```typescript
+/* animal.module.ts */
+
+import { Module } from '@nestjs/common';
+import { InjectDynamicProviderModule } from 'nestjs-dynamic-providers';
+import { AnyOtherProvider } from './any-other-provider';
+
+@Module({
+  import: [InjectDynamicProviderModule.forFeature({ pattern: 'dist/**/*.animal.js', exportProviders: true })],
+  providers: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
+  exports: [AnyOtherProvider], // Will be [AnyOtherProvider, Hippo, Lion]
+})
+export class AnimalModule {}
+```
+
+</details>
+
+<details>
+  <summary>Using decorator (Click to expand)</summary>
+
 First you need to call the initialization function in bootstrap.
 
 ```typescript
@@ -54,11 +131,6 @@ Then just add `@InjectDynamicProviders` decorator to the module. The sample belo
 all classes that it finds in files that end in `.animal.js`.
 
 - `@InjectDynamicProviders` decorator takes list of glob patterns or list of options as parameters.
-
-> You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are 
-> compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
-
-> ⚠️**Important! Files are searched from the startup root.**
 
 ```typescript
 /* animal.module.ts */
@@ -120,3 +192,4 @@ import { AnyOtherProvider } from './any-other-provider';
 })
 export class AnimalModule {}
 ```
+</details>
