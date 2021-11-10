@@ -1,14 +1,10 @@
 import { InjectDynamicProviders, resolveDynamicProviders } from '../src';
 import { Module, ModuleMetadata } from '@nestjs/common';
-import { Hippo } from './__fixture__/group-one/hippo.wild';
-import { Lion } from './__fixture__/group-one/lion.wild';
-import { Veterinarian } from './__fixture__/not-for-search/veterinarian';
-import { Cat } from './__fixture__/group-two/cat.pet';
-import { Dog } from './__fixture__/group-two/dog.pet';
+import { Veterinarian, Hippo, Lion, Cat, Dog } from './__fixture__';
 
 describe('Dynamic module', () => {
-  it('should set providers into module', async () => {
-    @InjectDynamicProviders('**/*.wild.ts')
+  it('should set only injectable providers into module', async () => {
+    @InjectDynamicProviders('test/__fixture__/**/*.wild.ts')
     @Module({})
     class AnimalModule {}
 
@@ -21,7 +17,7 @@ describe('Dynamic module', () => {
   });
 
   it('should concat providers in module', async () => {
-    @InjectDynamicProviders('**/*.wild.ts')
+    @InjectDynamicProviders('test/__fixture__/**/*.wild.ts')
     @Module({ providers: [Veterinarian] })
     class AnimalModule {}
 
@@ -34,7 +30,10 @@ describe('Dynamic module', () => {
   });
 
   it('should find by two patterns', async () => {
-    @InjectDynamicProviders('**/*.wild.ts', '**/*.pet.ts')
+    @InjectDynamicProviders(
+      'test/__fixture__/**/*.wild.ts',
+      'test/__fixture__/**/*.pet.ts',
+    )
     @Module({ providers: [Veterinarian] })
     class AnimalModule {}
 
@@ -46,13 +45,13 @@ describe('Dynamic module', () => {
     expect(actualResult).toStrictEqual(expectResult);
   });
 
-  it('should add providers and set them to exports into module', async () => {
+  it('should add providers and set exported providers to exports into module', async () => {
     @InjectDynamicProviders(
       {
-        pattern: '**/*.wild.ts',
+        pattern: 'test/__fixture__/**/*.wild.ts',
         exportProviders: true,
       },
-      { pattern: '**/*.pet.ts' },
+      { pattern: 'test/__fixture__/**/*.pet.ts' },
     )
     @Module({ providers: [Veterinarian] })
     class AnimalModule {}
