@@ -92,6 +92,18 @@ import { Injectable } from '@nestjs/common';
 export class Lion {}
 ```
 
+```typescript
+/* app.module.ts */
+
+import { Module } from '@nestjs/common';
+import { AnimalModule } from './animal.module';
+
+@Module({
+  imports: [AnimalModule],
+})
+export class AppModule {}
+```
+
 You can also add providers to exports.
 
 ```typescript
