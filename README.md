@@ -51,9 +51,12 @@ bootstrap();
 ```
 
 Then just add `@InjectDynamicProviders` decorator to the module. The sample below will add to the providers of the module
-all classes that it finds in files that end in `.animal.js`
+all classes that it finds in files that end in `.animal.js`.
 
 - `@InjectDynamicProviders` decorator takes list of glob patterns or list of options as parameters.
+
+> You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are 
+> compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
 
 > ⚠️**Important! Files are searched from the startup root.**
 
@@ -73,6 +76,7 @@ export class AnimalModule {}
 
 ```typescript
 /* hippo.animal.ts */
+
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
