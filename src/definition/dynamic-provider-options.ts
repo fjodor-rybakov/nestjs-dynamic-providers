@@ -1,4 +1,5 @@
 import { Pattern } from './pattern';
+import { Type } from '@nestjs/common';
 
 /**
  * Dynamic provide options.
@@ -15,4 +16,9 @@ export interface DynamicProviderOptions {
    * @default: false
    */
   exportProviders?: boolean;
+
+  /**
+   * Custom filter for module file
+   */
+  filterPredicate?: (types: Type) => boolean;
 }
