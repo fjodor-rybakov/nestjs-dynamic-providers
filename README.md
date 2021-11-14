@@ -32,6 +32,11 @@ $ yarn add nestjs-dynamic-providers
 
 ## ▶️ Usage <a name="Usage"></a>
 
+> You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are
+> compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
+
+> ⚠️**Important! Files are searched from the startup root.**
+
 First you need to call the initialization function in bootstrap.
 
 ```typescript
@@ -53,12 +58,10 @@ bootstrap();
 Then just add `@InjectDynamicProviders` decorator to the module. The sample below will add to the providers of the module
 all classes that it finds in files that end in `.animal.js`.
 
+> By default, classes are searched for that are marked with `@Injectable()` decorator.
+> To override you need to pass `filterPredicate` as parameters to `@InjectDynamicProviders()`.
+
 - `@InjectDynamicProviders` decorator takes list of glob patterns or list of options as parameters.
-
-> You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are 
-> compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
-
-> ⚠️**Important! Files are searched from the startup root.**
 
 ```typescript
 /* animal.module.ts */

@@ -10,17 +10,19 @@ export class ResolveFileService {
   ): Promise<ResolvedTypeProviders[]> {
     const classesList = await Promise.all(
       options.map(
-        ({ pattern, exportProviders }) =>
+        ({ pattern, exportProviders, filterPredicate }) =>
           new Promise<ResolvedTypeProviders>((resolve, reject) =>
             glob(pattern, async (err, pathToFiles) => {
               if (err) return reject(err);
 
-              const types = await this.getClasses(pathToFiles);
+              const types = (await this.getClasses(pathToFiles)).flat();
+
+              if (!filterPredicate)
+                filterPredicate = (type) =>
+                  Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type);
 
               return resolve({
-                types: types.filter((type) =>
-                  Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type),
-                ),
+                types: types.filter(filterPredicate),
                 exportProviders,
               });
             }),
@@ -31,14 +33,14 @@ export class ResolveFileService {
     return classesList.flat();
   }
 
-  private getClasses(pathToFiles: string[]): Promise<Type[]> {
+  private getClasses(pathToFiles: string[]): Promise<Type[][]> {
     return Promise.all(
       pathToFiles.map(async (pathToFile: string) => {
         const path = await import('path');
         const resolvedPath = path.resolve(process.cwd(), pathToFile);
         const resolvedClass = await import(resolvedPath);
 
-        return Object.values<Type>(resolvedClass)[0];
+        return Object.values<Type>(resolvedClass);
       }),
     );
   }
