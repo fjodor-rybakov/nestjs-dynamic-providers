@@ -1,4 +1,8 @@
-import { InjectDynamicProviders, resolveDynamicProviders } from '../src';
+import {
+  InjectDynamicProviders,
+  IsObject,
+  resolveDynamicProviders,
+} from '../src';
 import { Module, ModuleMetadata, Type } from '@nestjs/common';
 import {
   Veterinarian,
@@ -82,7 +86,7 @@ describe('Dynamic module', () => {
     @InjectDynamicProviders({
       pattern: 'test/__fixture__/**/*.command.ts',
       filterPredicate: (type: Type) =>
-        Reflect.hasOwnMetadata(COMMAND_METADATA, type),
+        IsObject(type) && Reflect.hasOwnMetadata(COMMAND_METADATA, type),
     })
     @Module({})
     class CommandModule {}

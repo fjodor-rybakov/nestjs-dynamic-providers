@@ -3,6 +3,7 @@ import { ResolvedTypeProviders } from '../definition/resolved-type-providers';
 import { SCOPE_OPTIONS_METADATA } from '@nestjs/common/constants';
 import { Type } from '@nestjs/common';
 import { glob } from 'glob';
+import { IsObject } from '../utils/function/is-object';
 
 export class ResolveFileService {
   async resolveByGlobPattern(
@@ -19,6 +20,7 @@ export class ResolveFileService {
 
               if (!filterPredicate)
                 filterPredicate = (type) =>
+                  IsObject(type) &&
                   Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type);
 
               return resolve({
