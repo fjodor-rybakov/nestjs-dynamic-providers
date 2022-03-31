@@ -123,3 +123,20 @@ import { AnyOtherProvider } from './any-other-provider';
 })
 export class AnimalModule {}
 ```
+
+To override the search criteria for `class` in file, use `filterPredicart`.
+
+```typescript
+/* bot.module.ts */
+
+import { Module } from '@nestjs/common';
+import { InjectDynamicProviders, IsObject } from 'nestjs-dynamic-providers';
+
+@InjectDynamicProviders({
+  pattern: '**/*.command.js',
+  filterPredicate: (type) => // Filter only object type and class has decorator with metadata key `ANY_METADATA_KEY`
+    IsObject(type) && Reflect.hasMetadata('ANY_METADATA_KEY', type.prototype),
+})
+@Module({})
+export class BotModule {}
+```
