@@ -1,10 +1,11 @@
-import { Type } from '@nestjs/common';
+import { Provider, Scope, Type } from '@nestjs/common';
 import { Pattern } from '../definition/pattern';
 import { StoreValue } from '../definition/store-value';
 import { DynamicProviderOptions } from '../definition/dynamic-provider-options';
 import { ResolveFileService } from '../service/resolve-file.service';
 import { isDynamicProviderOptions } from '../definition/guard/is-dynamic-provider-options';
 import { isPattern } from '../definition/guard/is-pattern';
+import { ClassProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 
 const store: StoreValue[] = [];
 
@@ -36,8 +37,8 @@ export async function resolveDynamicProviders(): Promise<void> {
         options,
       );
 
-      resolvedProviders.forEach(({ types, exportProviders }) => {
-        mergeProviders(target, types);
+      resolvedProviders.forEach(({ types, exportProviders, scope }) => {
+        mergeProviders(target, types, scope);
         if (exportProviders) {
           mergeExportedProviders(target, types);
         }
@@ -46,16 +47,35 @@ export async function resolveDynamicProviders(): Promise<void> {
   );
 }
 
-function mergeProviders(target: Function, types: Type[]): void {
+function mergeProviders(
+  target: Function,
+  newProviderTypes: Type[],
+  scope?: Scope,
+): void {
   const currentProviders = Reflect.getMetadata('providers', target) ?? [];
-  Reflect.defineMetadata('providers', [...currentProviders, ...types], target);
+  const newProviders: (Provider | ClassProvider)[] = scope
+    ? newProviderTypes.map<ClassProvider>((newClassType) => ({
+        provide: newClassType,
+        useClass: newClassType,
+        scope,
+      }))
+    : newProviderTypes;
+
+  Reflect.defineMetadata(
+    'providers',
+    [...currentProviders, ...newProviders],
+    target,
+  );
 }
 
-function mergeExportedProviders(target: Function, types: Type[]): void {
+function mergeExportedProviders(
+  target: Function,
+  newExportedProviders: Type[],
+): void {
   const currentExportedProviders = Reflect.getMetadata('exports', target) ?? [];
   Reflect.defineMetadata(
     'exports',
-    [...currentExportedProviders, ...types],
+    [...currentExportedProviders, ...newExportedProviders],
     target,
   );
 }

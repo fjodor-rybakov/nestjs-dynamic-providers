@@ -3,16 +3,17 @@ import {
   IsObject,
   resolveDynamicProviders,
 } from '../src';
-import { Module, ModuleMetadata, Type } from '@nestjs/common';
+import { Module, ModuleMetadata, Scope, Type } from '@nestjs/common';
 import {
-  Veterinarian,
+  Cat,
+  COMMAND_METADATA,
+  Dog,
   Hippo,
   Lion,
-  Cat,
-  Dog,
-  COMMAND_METADATA,
   PlayCommand,
+  Veterinarian,
 } from './__fixture__';
+import { ClassProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 
 describe('Dynamic module', () => {
   it('should set only injectable providers into module', async () => {
@@ -95,6 +96,33 @@ describe('Dynamic module', () => {
 
     const actualResult = Reflect.getMetadata('providers', CommandModule);
     const expectResult = [PlayCommand];
+
+    expect(actualResult).toStrictEqual(expectResult);
+  });
+
+  it('should register providers with scope', async () => {
+    @InjectDynamicProviders({
+      pattern: 'test/__fixture__/**/*.wild.ts',
+      scope: Scope.TRANSIENT,
+    })
+    @Module({})
+    class AnimalModule {}
+
+    await resolveDynamicProviders();
+
+    const actualResult = Reflect.getMetadata('providers', AnimalModule);
+    const expectResult: ClassProvider[] = [
+      {
+        provide: Hippo,
+        useClass: Hippo,
+        scope: Scope.TRANSIENT,
+      },
+      {
+        provide: Lion,
+        useClass: Lion,
+        scope: Scope.TRANSIENT,
+      },
+    ];
 
     expect(actualResult).toStrictEqual(expectResult);
   });

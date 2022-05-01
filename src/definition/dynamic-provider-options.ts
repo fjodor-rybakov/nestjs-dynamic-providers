@@ -1,5 +1,5 @@
 import { Pattern } from './pattern';
-import { Type } from '@nestjs/common';
+import { Scope, Type } from '@nestjs/common';
 
 /**
  * Dynamic provide options.
@@ -9,6 +9,11 @@ export interface DynamicProviderOptions {
    * Glob pattern for finding files.
    */
   pattern: Pattern;
+
+  /**
+   * Specifies the lifetime of an injected Provider
+   */
+  scope?: Scope;
 
   /**
    * Add providers to export in module.

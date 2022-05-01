@@ -11,7 +11,7 @@ export class ResolveFileService {
   ): Promise<ResolvedTypeProviders[]> {
     const classesList = await Promise.all(
       options.map(
-        ({ pattern, exportProviders, filterPredicate }) =>
+        ({ pattern, exportProviders, filterPredicate, scope }) =>
           new Promise<ResolvedTypeProviders>((resolve, reject) =>
             glob(pattern, async (err, pathToFiles) => {
               if (err) return reject(err);
@@ -26,6 +26,7 @@ export class ResolveFileService {
               return resolve({
                 types: types.filter(filterPredicate),
                 exportProviders,
+                scope,
               });
             }),
           ),
