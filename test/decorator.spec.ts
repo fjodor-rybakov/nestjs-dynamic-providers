@@ -3,7 +3,13 @@ import {
   IsObject,
   resolveDynamicProviders,
 } from '../src';
-import { Module, ModuleMetadata, Scope, Type } from '@nestjs/common';
+import {
+  Module,
+  ModuleMetadata,
+  Scope,
+  Type,
+  ClassProvider,
+} from '@nestjs/common';
 import {
   Cat,
   COMMAND_METADATA,
@@ -13,7 +19,6 @@ import {
   PlayCommand,
   Veterinarian,
 } from './__fixture__';
-import { ClassProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 
 describe('Dynamic module', () => {
   it('should set only injectable providers into module', async () => {

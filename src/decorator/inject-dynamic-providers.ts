@@ -1,11 +1,10 @@
-import { Provider, Scope, Type } from '@nestjs/common';
+import { Provider, Scope, Type, ClassProvider } from '@nestjs/common';
 import { Pattern } from '../definition/pattern';
 import { StoreValue } from '../definition/store-value';
 import { DynamicProviderOptions } from '../definition/dynamic-provider-options';
 import { ResolveFileService } from '../service/resolve-file.service';
 import { isDynamicProviderOptions } from '../definition/guard/is-dynamic-provider-options';
 import { isPattern } from '../definition/guard/is-pattern';
-import { ClassProvider } from '@nestjs/common/interfaces/modules/provider.interface';
 
 const store: StoreValue[] = [];
 
