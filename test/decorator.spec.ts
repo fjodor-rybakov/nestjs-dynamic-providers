@@ -29,7 +29,7 @@ describe('Dynamic module', () => {
     await resolveDynamicProviders();
 
     const actualResult = Reflect.getMetadata('providers', AnimalModule);
-    const expectResult = [Hippo, Lion];
+    const expectResult = [Lion, Hippo];
 
     expect(actualResult).toStrictEqual(expectResult);
   });
@@ -42,7 +42,7 @@ describe('Dynamic module', () => {
     await resolveDynamicProviders();
 
     const actualResult = Reflect.getMetadata('providers', AnimalModule);
-    const expectResult = [Veterinarian, Hippo, Lion];
+    const expectResult = [Veterinarian, Lion, Hippo];
 
     expect(actualResult).toStrictEqual(expectResult);
   });
@@ -58,7 +58,7 @@ describe('Dynamic module', () => {
     await resolveDynamicProviders();
 
     const actualResult = Reflect.getMetadata('providers', AnimalModule);
-    const expectResult = [Veterinarian, Hippo, Lion, Cat, Dog];
+    const expectResult = [Veterinarian, Lion, Hippo, Dog, Cat];
 
     expect(actualResult).toStrictEqual(expectResult);
   });
@@ -81,8 +81,8 @@ describe('Dynamic module', () => {
       exports: Reflect.getMetadata('exports', AnimalModule),
     };
     const expectResult: ModuleMetadata = {
-      providers: [Veterinarian, Hippo, Lion, Cat, Dog],
-      exports: [Hippo, Lion],
+      providers: [Veterinarian, Lion, Hippo, Dog, Cat],
+      exports: [Lion, Hippo],
     };
 
     expect(actualResult).toStrictEqual(expectResult);
@@ -118,13 +118,13 @@ describe('Dynamic module', () => {
     const actualResult = Reflect.getMetadata('providers', AnimalModule);
     const expectResult: ClassProvider[] = [
       {
-        provide: Hippo,
-        useClass: Hippo,
+        provide: Lion,
+        useClass: Lion,
         scope: Scope.TRANSIENT,
       },
       {
-        provide: Lion,
-        useClass: Lion,
+        provide: Hippo,
+        useClass: Hippo,
         scope: Scope.TRANSIENT,
       },
     ];

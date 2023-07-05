@@ -10,26 +10,21 @@ export class ResolveFileService {
     options: DynamicProviderOptions[],
   ): Promise<ResolvedTypeProviders[]> {
     const classesList = await Promise.all(
-      options.map(
-        ({ pattern, exportProviders, filterPredicate, scope }) =>
-          new Promise<ResolvedTypeProviders>((resolve, reject) =>
-            glob(pattern, async (err, pathToFiles) => {
-              if (err) return reject(err);
+      options.map(({ pattern, exportProviders, filterPredicate, scope }) =>
+        glob(pattern).then(async (pathToFiles) => {
+          const types = (await this.getClasses(pathToFiles)).flat();
 
-              const types = (await this.getClasses(pathToFiles)).flat();
+          if (!filterPredicate)
+            filterPredicate = (type) =>
+              IsObject(type) &&
+              Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type);
 
-              if (!filterPredicate)
-                filterPredicate = (type) =>
-                  IsObject(type) &&
-                  Reflect.hasOwnMetadata(SCOPE_OPTIONS_METADATA, type);
-
-              return resolve({
-                types: types.filter(filterPredicate),
-                exportProviders,
-                scope,
-              });
-            }),
-          ),
+          return {
+            types: types.filter(filterPredicate),
+            exportProviders,
+            scope,
+          };
+        }),
       ),
     );
 
