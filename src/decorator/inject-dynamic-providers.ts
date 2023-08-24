@@ -5,6 +5,7 @@ import { DynamicProviderOptions } from '../definition/dynamic-provider-options';
 import { ResolveFileService } from '../service/resolve-file.service';
 import { isDynamicProviderOptions } from '../definition/guard/is-dynamic-provider-options';
 import { isPattern } from '../definition/guard/is-pattern';
+import * as process from 'process';
 
 const store: StoreValue[] = [];
 
@@ -28,12 +29,17 @@ export function InjectDynamicProviders(...options: any[]): ClassDecorator {
 /**
  * Init function.
  */
-export async function resolveDynamicProviders(): Promise<void> {
+export async function resolveDynamicProviders(
+  startupPath = process.cwd(),
+): Promise<void> {
+  const resolveFileService = new ResolveFileService();
+
   await Promise.all(
     store.map(async ({ target, options }) => {
-      const resolveFileService = new ResolveFileService();
-      const resolvedProviders =
-        await resolveFileService.resolveByGlobPattern(options);
+      const resolvedProviders = await resolveFileService.resolveByGlobPattern(
+        startupPath,
+        options,
+      );
 
       resolvedProviders.forEach(({ types, exportProviders, scope }) => {
         mergeProviders(target, types, scope);

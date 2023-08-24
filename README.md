@@ -35,7 +35,8 @@ $ yarn add nestjs-dynamic-providers
 > You may notice that files with `.ts` extension have a glob pattern is set for `.js`. This example assumes that you are
 > compiling files from `typescript` to `javascript`. This note does not apply for `ts-node`.
 
-> ⚠️**Important! Files are searched from the startup root.**
+> ⚠️**Important! Files are searched from the startup root(`process.cwd()`) by default. 
+> To override this, you can pass startup path in `resolveDynamicProviders('my/startup/folder')` as argument.**
 
 First you need to call the initialization function in bootstrap.
 

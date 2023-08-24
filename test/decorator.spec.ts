@@ -19,6 +19,8 @@ import {
   PlayCommand,
   Veterinarian,
 } from './__fixture__';
+import * as path from 'path';
+import * as process from 'process';
 
 describe('Dynamic module', () => {
   it('should set only injectable providers into module', async () => {
@@ -128,6 +130,19 @@ describe('Dynamic module', () => {
         scope: Scope.TRANSIENT,
       },
     ];
+
+    expect(actualResult).toStrictEqual(expectResult);
+  });
+
+  it('should search providers from test folder', async () => {
+    @InjectDynamicProviders('__fixture__/**/*.wild.ts')
+    @Module({})
+    class AnimalModule {}
+
+    await resolveDynamicProviders(path.resolve(process.cwd(), 'test'));
+
+    const actualResult = Reflect.getMetadata('providers', AnimalModule);
+    const expectResult = [Lion, Hippo];
 
     expect(actualResult).toStrictEqual(expectResult);
   });
