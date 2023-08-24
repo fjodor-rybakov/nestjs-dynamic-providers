@@ -5,6 +5,7 @@
   "author": "fjodor-rybakov",
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist/**/*",
@@ -30,8 +31,7 @@
     "module"
   ],
   "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "tsup",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "test": "jest",
@@ -54,6 +54,7 @@
     "@nestjs/core": "^10.0.5",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.5",
+    "@swc/core": "^1.3.78",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.3",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
@@ -69,6 +70,7 @@
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.4.4",
     "tsconfig-paths": "^4.2.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   },
   "jest": {
