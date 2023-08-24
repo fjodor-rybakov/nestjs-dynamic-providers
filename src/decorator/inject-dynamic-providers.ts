@@ -32,9 +32,8 @@ export async function resolveDynamicProviders(): Promise<void> {
   await Promise.all(
     store.map(async ({ target, options }) => {
       const resolveFileService = new ResolveFileService();
-      const resolvedProviders = await resolveFileService.resolveByGlobPattern(
-        options,
-      );
+      const resolvedProviders =
+        await resolveFileService.resolveByGlobPattern(options);
 
       resolvedProviders.forEach(({ types, exportProviders, scope }) => {
         mergeProviders(target, types, scope);
