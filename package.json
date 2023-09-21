@@ -40,7 +40,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
-    "glob": "10.3.3"
+    "glob": "10.3.4"
   },
   "peerDependencies": {
     "@nestjs/common": "9.* || 10.*",
