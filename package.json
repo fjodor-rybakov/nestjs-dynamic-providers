@@ -1,6 +1,6 @@
 {
   "name": "nestjs-dynamic-providers",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Inject dynamic providers",
   "author": "fjodor-rybakov",
   "license": "MIT",
