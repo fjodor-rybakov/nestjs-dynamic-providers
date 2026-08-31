@@ -1,3 +1,5 @@
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
@@ -125,7 +127,7 @@ import { AnyOtherProvider } from './any-other-provider';
 export class AnimalModule {}
 ```
 
-To override the search criteria for `class` in file, use `filterPredicart`.
+To override the search criteria for `class` in file, use `filterPredicate`.
 
 ```typescript
 /* bot.module.ts */
